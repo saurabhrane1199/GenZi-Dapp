@@ -1,8 +1,8 @@
 import React from 'react'
 import './signin.scss'
 import CustomButton from '../customButtom/customButton'
-import {signInWithGoogle} from '../../firebase.utils.js'
-import {auth} from 'firebase'
+// import {signInWithGoogle} from '../../firebase.utils.js'
+// import {auth} from 'firebase'
 
 const SignIn = () => (
 	<body className="align">
@@ -20,7 +20,7 @@ const SignIn = () => (
 
 				<div className="form__field">
 					<input type="submit" value="Sign In" />
-					<CustomButton onClick = {signInWithGoogle} isGoogleSignIn>Sign In With Google</CustomButton>
+					{/* <CustomButton onClick = {signInWithGoogle} isGoogleSignIn>Sign In With Google</CustomButton> */}
 				</div>
 			</form>
 			<p className="text--center">Not a member? <a href="#">Sign up now</a> <svg className="icon"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="assets/images/icons.svg#arrow-right"></use></svg></p>

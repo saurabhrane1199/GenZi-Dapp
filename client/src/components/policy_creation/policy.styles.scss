@@ -1,0 +1,18 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+$theme-colors: (
+    "info": tomato,
+    "danger": teal
+);
+
+
+.formBox{
+    height: 80vh;
+    width: 70%;
+    margin:100px auto;
+    background-color:#131313;
+    border-radius: 25px;
+    box-shadow:1px 1px 5px 1px #000000;
+}
+
+
