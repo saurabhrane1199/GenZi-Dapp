@@ -122,8 +122,8 @@ contract genz{
     // TODO:- integrate duration with cover calulcation TODO
     // function to create a new policy
     function newPolicy (uint _area, string memory _location, bool _forFlood, uint8 _cropId, uint _duration) public payable{
-        // require(details[deets[msg.sender]].role == 0, "Only farmer can make a new policy");
-        // require(msg.value == (cropTypes[_cropId].premiumPerAcre * _area),"Incorrect Premium Amount");
+        require(details[deets[msg.sender]].role == 0, "Only farmer can make a new policy");
+        require(msg.value == (cropTypes[_cropId].premiumPerAcre * _area),"Incorrect Premium Amount");
         balance += msg.value; // update risk pool balance
         details[deets[msg.sender]].bal -= int(msg.value); // update user balance
 

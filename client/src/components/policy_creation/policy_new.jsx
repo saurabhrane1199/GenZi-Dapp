@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import getWeb3 from "../../getWeb3.js";
 // import './policy.styles.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, InputGroup, FormControl, Button} from 'react-bootstrap';
 import GenZContract from '../../contracts/genz.json';
-import getWeb3 from "../../getWeb3.js";
+
 
 
 class CreatePolicy extends Component {
@@ -88,9 +89,9 @@ class CreatePolicy extends Component {
 
     run = async () => {
         const { accounts, contract } = this.state
+        console.log(`Your Account : ${accounts} COntract: ${contract}`)
         const {area,location,forFlood,cropId,duration} = this.state
-        console.log(`This is what your are sending ${typeof(area)} ${typeof(location)} ${typeof(forFlood)} ${typeof(cropId)} ${typeof(duration)}` )
-        await contract.methods.newPolicy(Number(area),location,forFlood,Number(cropId),Number(duration)).send({ from: accounts[0], value:100})
+        await contract.methods.newPolicy(area ,location ,forFlood , cropId, duration).send({ from: accounts[0], value:100})
             .then(res => console.log(`Success ${res}`))
             .catch(err => console.log(err))
         const response = await contract.methods.getPolicyDetails(0).call();
@@ -100,6 +101,9 @@ class CreatePolicy extends Component {
     // int:area str:location bool:forFlood int:cropId int:Duration
 
     render() {
+        if (!this.state.web3) {
+            return <div>Loading Web3, accounts, and contract...</div>;
+          }
         return (
             <div className="Wrapper" style={{width:"50%", margin:"0 auto"}}>
                     <Form onSubmit={this.handleOnSubmit}>

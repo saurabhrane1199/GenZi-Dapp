@@ -57,7 +57,7 @@ class KYC extends Component {
     const response = await contract.methods.getDetails().call();
     this.setState({ storageValue: response },() => {
       console.log(response)});
-      // history.push('/createPolicy')
+      history.push('/createPolicy')
   };
 
 
