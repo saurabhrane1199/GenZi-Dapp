@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 // import './policy.styles.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Form, InputGroup, FormControl, Button} from 'react-bootstrap'
+import {Form, InputGroup, FormControl, Button} from 'react-bootstrap';
+import GenZContract from '../../contracts/genz.json';
+import getWeb3 from "../../getWeb3.js";
 
 
 class CreatePolicy extends Component {
@@ -12,13 +14,16 @@ class CreatePolicy extends Component {
             location : 'Mumbai',
             forFlood : true,
             cropId : 0,
-            duration : 0
+            duration : 0,
+            web3: null,
+            accounts: null,
+            contract: null
         }
     }
 
     handleOnChangeArea = (e) => {
         this.setState({
-            area : e.target.value
+            area : Number(e.target.value)
         })
 
     }
@@ -32,7 +37,7 @@ class CreatePolicy extends Component {
     handleOnChangeFlood = (e) => {
         const flag = false
         const value = e.target.value
-        if(value=="Flood"){
+        if(value==="Flood"){
             flag=true
         }else{
             flag=false
@@ -45,20 +50,52 @@ class CreatePolicy extends Component {
 
     handleOnChangeCropId = (e) => {
         this.setState({
-            cropId : e.target.value
+            cropId : Number(e.target.value)
         })
     }
 
     handleOnChangeDuration = (e) => {
         this.setState({
-            duration : e.target.value
+            duration : Number(e.target.value)
         })
     }
 
     handleOnSubmit = (e) => {
         e.preventDefault();
+        this.run()
 
     }
+
+    componentDidMount = async () => {
+        try {
+          const web3 = await getWeb3();
+          const accounts = await web3.eth.getAccounts();
+          const networkId = await web3.eth.net.getId();
+          const deployedNetwork = GenZContract.networks[networkId];
+          const instance = new web3.eth.Contract(
+            GenZContract.abi,
+            deployedNetwork && deployedNetwork.address,
+          );
+          this.setState({ web3, accounts, contract: instance });
+        } catch (error) {
+            console.log(this.state.contract)
+          alert(
+            `Failed to load web3, accounts, or contract. Check console for details.`,
+          );
+          console.error(error);
+        }
+      };
+
+    run = async () => {
+        const { accounts, contract } = this.state
+        const {area,location,forFlood,cropId,duration} = this.state
+        console.log(`This is what your are sending ${typeof(area)} ${typeof(location)} ${typeof(forFlood)} ${typeof(cropId)} ${typeof(duration)}` )
+        await contract.methods.newPolicy(Number(area),location,forFlood,Number(cropId),Number(duration)).send({ from: accounts[0], value:100})
+            .then(res => console.log(`Success ${res}`))
+            .catch(err => console.log(err))
+        const response = await contract.methods.getPolicyDetails(0).call();
+        this.setState({ storageValue: response },() => {alert(response)});
+      };
 
     // int:area str:location bool:forFlood int:cropId int:Duration
 

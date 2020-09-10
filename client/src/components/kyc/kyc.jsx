@@ -2,27 +2,25 @@ import React, { Component, useState } from 'react';
 import getWeb3 from "../../getWeb3.js";
 import { withRouter } from 'react-router-dom';
 // import KycContract from "../contracts/kyc.json";
-import KycContract from '../../contracts/kyc.json'
+// import KycContract from '../../contracts/kyc.json'
+import GenZContract from '../../contracts/genz.json';
 import './kyc.styles.scss'
-import TextField from '@material-ui/core/TextField';
 import PersonIcon from '@material-ui/icons/Person';
 import ShortTextIcon from '@material-ui/icons/ShortText';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+
 
 
 
 class KYC extends Component {
 
-
   constructor(props) {
     super(props)
     this.state = {
       aadhar: '',
-      role: '1',
+      role: '0',
       name: '',
       storageValue: 0,
       web3: null,
@@ -37,12 +35,12 @@ class KYC extends Component {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
       const networkId = await web3.eth.net.getId();
-      const deployedNetwork = KycContract.networks[networkId];
+      const deployedNetwork = GenZContract.networks[networkId];
       const instance = new web3.eth.Contract(
-        KycContract.abi,
+        GenZContract.abi,
         deployedNetwork && deployedNetwork.address,
       );
-      this.setState({ web3, accounts, contract: instance }, () => alert("Address and shizz set"));
+      this.setState({ web3, accounts, contract: instance });
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -58,18 +56,8 @@ class KYC extends Component {
     await contract.methods._register(aadhar, name, role).send({ from: accounts[0] });
     const response = await contract.methods.getDetails().call();
     this.setState({ storageValue: response },() => {
-      alert(response)
-      history.push('/createPolicy',
-        {
-          data: {
-            web3: this.state.web3,
-            accounts : this.state.accounts,
-            contract : this.state.contract,
-          }
-        }
-
-      )
-    });
+      console.log(response)});
+      // history.push('/createPolicy')
   };
 
 
@@ -122,8 +110,8 @@ class KYC extends Component {
           <div
             style={{ marginLeft: "10px" }}>
             <RadioGroup style={{ backgroundColor: "none" }} aria-label="gender" name="gender1" value={this.state.role} onChange={this.handleOnChangeRole}>
-              <FormControlLabel value="1" control={<Radio />} label="Farmer" />
-              <FormControlLabel value="0" control={<Radio />} label="Investor" />
+              <FormControlLabel value="0" control={<Radio />} label="Farmer" />
+              <FormControlLabel value="1" control={<Radio />} label="Investor" />
             </RadioGroup>
           </div>
 

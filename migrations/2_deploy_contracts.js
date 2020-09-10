@@ -1,6 +1,9 @@
-
-var KYCContract = artifacts.require("./kyc.sol");
+var GENZContract = artifacts.require("./genz.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(KYCContract);
+  deployer.deploy(GENZContract,{value:5000});
 };
+
+// module.exports = function(deployer) {
+//   deployer.deploy(KYCContract);
+// };
