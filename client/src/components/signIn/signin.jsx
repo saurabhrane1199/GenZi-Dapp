@@ -1,7 +1,7 @@
 import React from 'react'
 import './signin.scss'
 import CustomButton from '../customButtom/customButton'
-// import {signInWithGoogle} from '../../firebase.utils.js'
+import {signInWithGoogle} from '../../firebase/firebase.utils.js'
 // import {auth} from 'firebase'
 
 const SignIn = () => (
@@ -9,18 +9,18 @@ const SignIn = () => (
 		<div className="grid">
 			<form action="https://httpbin.org/post" method="POST" className="form login">
 				<div className="form__field">
-					<label for="login__username"><svg className="icon"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#user"></use></svg><span className="hidden">Username</span></label>
+					<label htmlFor="login__username"><svg className="icon"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#user"></use></svg><span className="hidden">Username</span></label>
 					<input id="login__username" type="text" name="username" className="form__input" placeholder="Username" required />
 				</div>
 
 				<div className="form__field">
-					<label for="login__password"><svg className="icon"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#lock"></use></svg><span className="hidden">Password</span></label>
-					<input id="login__password" type="password" name="password" className="form__input" placeholder="Password" required />
+					<label htmlFor="login__password"><svg className="icon"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#lock"></use></svg><span className="hidden">Password</span></label>
+					<input id="login__password" type="password" name="password" className="htmlForm__input" placeholder="Password" required />
 				</div>
 
 				<div className="form__field">
 					<input type="submit" value="Sign In" />
-					{/* <CustomButton onClick = {signInWithGoogle} isGoogleSignIn>Sign In With Google</CustomButton> */}
+					<CustomButton onClick = {signInWithGoogle} isGoogleSignIn>Sign In With Google</CustomButton>
 				</div>
 			</form>
 			<p className="text--center">Not a member? <a href="#">Sign up now</a> <svg className="icon"><use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="assets/images/icons.svg#arrow-right"></use></svg></p>

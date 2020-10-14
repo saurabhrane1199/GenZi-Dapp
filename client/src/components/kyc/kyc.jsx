@@ -1,9 +1,4 @@
-import React, { Component, useState } from 'react';
-import getWeb3 from "../../getWeb3.js";
-import { withRouter } from 'react-router-dom';
-// import KycContract from "../contracts/kyc.json";
-// import KycContract from '../../contracts/kyc.json'
-import GenZContract from '../../contracts/genz.json';
+import React, {Component} from 'react';
 import './kyc.styles.scss'
 import PersonIcon from '@material-ui/icons/Person';
 import ShortTextIcon from '@material-ui/icons/ShortText';
@@ -16,48 +11,81 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class KYC extends Component {
 
+  state = {stackId:null}
+
   constructor(props) {
     super(props)
     this.state = {
       aadhar: '',
       role: '0',
       name: '',
-      storageValue: 0,
-      web3: null,
-      accounts: null,
-      contract: null
+      stackId : null
+      // storageValue: 0,
+      // web3: null,
+      // accounts: null,
+      // contract: null
     }
 
   }
 
-  componentDidMount = async () => {
-    try {
-      const web3 = await getWeb3();
-      const accounts = await web3.eth.getAccounts();
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = GenZContract.networks[networkId];
-      const instance = new web3.eth.Contract(
-        GenZContract.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
-      this.setState({ web3, accounts, contract: instance });
-    } catch (error) {
-      alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
-      );
-      console.error(error);
-    }
-  };
+  componentDidMount(){
+    console.log(this.props.drizzle,"Drizzle ar kyc")
+  }
+
+  setValue = (aadhar,name,role) => {
+    const {drizzle, drizzleState} = this.props;
+    const contract = drizzle.contracts.genz;
+
+    const stackId = contract.methods["_register"].cacheSend(aadhar,name,role,{
+      from : drizzleState.accounts[0]
+    });
+    this.setState({ stackId });
+  }
 
 
-  runExample = async (aadhar, name, role) => {
-    const { accounts, contract } = this.state;
-    const {history} =  this.props
-    await contract.methods._register(aadhar, name, role).send({ from: accounts[0] });
-    const response = await contract.methods.getDetails().call();
-    this.setState({ storageValue: response },() => {
-      console.log(response)});
-      history.push('/createPolicy')
+
+
+  // componentDidMount = async () => {
+  //   try {
+  //     const web3 = await getWeb3();
+  //     const accounts = await web3.eth.getAccounts();
+  //     const networkId = await web3.eth.net.getId();
+  //     const deployedNetwork = GenZContract.networks[networkId];
+  //     const instance = new web3.eth.Contract(
+  //       GenZContract.abi,
+  //       deployedNetwork && deployedNetwork.address,
+  //     );
+  //     this.setState({ web3, accounts, contract: instance });
+  //   } catch (error) {
+  //     alert(
+  //       `Failed to load web3, accounts, or contract. Check console for details.`,
+  //     );
+  //     console.error(error);
+  //   }
+  // };
+
+
+  // runExample = async (aadhar, name, role) => {
+  //   const { accounts, contract } = this.state;
+  //   const {history} =  this.props
+  //   await contract.methods._register(aadhar, name, role).send({ from: accounts[0] });
+  //   const response = await contract.methods.getDetails().call();
+  //   this.setState({ storageValue: response });
+  // }
+
+
+  getTxStatus = () => {
+    // get the transaction states from the drizzle state
+    const { transactions, transactionStack } = this.props.drizzleState;
+
+    // get the transaction hash using our saved `stackId`
+    const txHash = transactionStack[this.state.stackId];
+
+    // if transaction hash does not exist, don't display anything
+    if (!txHash) return null;
+
+    // otherwise, return the transaction status
+    return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
   };
 
 
@@ -86,13 +114,10 @@ class KYC extends Component {
       name: this.state.name,
       role: Number(this.state.role),
     };
-    this.runExample(data['aadhar'], data['name'], data['role'])
+    this.setValue(data['aadhar'], data['name'], data['role'])
   }
 
   render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
     return (
       <div className="wrapper">
         <h2 style={{ color: "white", textAlign: "center", margin: "10px 20px" }}>Please enter your details so we can know you better</h2><br />
@@ -127,7 +152,4 @@ class KYC extends Component {
   }
 }
 
-
-
-
-export default withRouter(KYC)
+export default KYC
