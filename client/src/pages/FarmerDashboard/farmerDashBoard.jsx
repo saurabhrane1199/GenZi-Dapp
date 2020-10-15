@@ -3,14 +3,15 @@ import './farmer-dashboard.styles.scss'
 import CreatePolicy from '../../components/policy_creation/policy_new'
 import { Tabs, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import MyContracts from '../../components/mycontracts/mycontracts'
 
 
 const  ConditionalRendering =  ({title}) => {
   if(title == 'contracts'){
-    return <h1>Contracts Here</h1>
+    return <MyContracts/>
   }
   else{
-    return <h1>Policy Here</h1>
+    return <CreatePolicy/>
   }
 }
 

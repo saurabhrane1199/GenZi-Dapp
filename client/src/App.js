@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SignInSignUpPage from './pages/onboarding/signInsignUp'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import CreatePolicy from './components/policy_creation/policy_new'
+import MyContracts from './components/mycontracts/mycontracts'
 import KYC from './components/kyc/kyc'
 import "./App.css";
 // import { Switch } from "@material-ui/core";
@@ -71,15 +72,25 @@ class App extends Component {
         <Switch>
           {/* <Route path='/signin' exact component={ () => <SignInSignUpPage />} /> */}
           <Route path='/' exact component={FarmerDashboard}/>
+          {/* <Route path='/' exact component={MyContracts}/> */}
           
           {/* <Route 
-              path='/' exact 
+              path='/kyc' exact 
               render={() => this.props.currentUser ? 
               
               <KYC
               drizzle = {this.props.drizzle}
               drizzleState = {this.state.drizzleState}/>: <Redirect to='/signin'/> }
           /> */}
+
+          <Route 
+              path='/kyc' exact 
+              render={() =>  
+              
+              <KYC
+              drizzle = {this.props.drizzle}
+              drizzleState = {this.state.drizzleState}/> }
+          />
           
           <Route exact path='/signin' render={
             () => this.props.currentUser ? 

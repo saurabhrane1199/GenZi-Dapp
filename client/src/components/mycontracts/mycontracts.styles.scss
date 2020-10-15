@@ -1,0 +1,50 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+// *, *:before, *:after {
+//   margin: 0;
+//   padding: 0;
+//   box-sizing: border-box;
+// }
+
+// body {
+//   background: #105469;
+//   font-family: 'Open Sans', sans-serif;
+// }
+.table-wrapper{
+    margin-top: 5%;
+}
+
+
+table {
+  width: 80vw;
+  background: #121820;
+  border-radius: 0.3em;
+  border-collapse: collapse;
+  margin: 1em;
+  font-size: 16px;
+}
+th {
+  border-bottom: 1px solid #364043;
+  color: #8ad0ff;
+  // font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+td {
+  color: #fff;
+  font-weight: 400;
+  padding: 0.65em 1em;
+}
+.disabled td {
+  color: #4F5F64;
+}
+tbody tr {
+
+  transition: background 0.25s ease;
+  transition: transform 0.25s ease;
+}
+tbody tr:hover {
+  background: #014055;
+  transform: scale(1.015);
+}
