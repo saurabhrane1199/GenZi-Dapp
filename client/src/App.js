@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import SignInSignUpPage from './pages/onboarding/signInsignUp'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import CreatePolicy from './components/policy_creation/policy_new'
 import KYC from './components/kyc/kyc'
 import "./App.css";
 // import { Switch } from "@material-ui/core";
 
 import {setCurrentUser} from './redux/user/user.actions'
-import {auth, createUserProfileDocument} from './firebase/firebase.utils.js'
+import {auth, createUserProfileDocument} from './firebase/firebase.utils.js';
+import FarmerDashboard from './pages/FarmerDashboard/farmerDashBoard.jsx'
 
 import {connect} from 'react-redux'
 
@@ -68,14 +69,26 @@ class App extends Component {
     else {
       return (
         <Switch>
-          <Route path='/signin' exact component={ () => <SignInSignUpPage />} />
+          {/* <Route path='/signin' exact component={ () => <SignInSignUpPage />} /> */}
+          <Route path='/' exact component={FarmerDashboard}/>
           
-          <Route 
+          {/* <Route 
               path='/' exact 
-              render={() => <KYC
+              render={() => this.props.currentUser ? 
+              
+              <KYC
               drizzle = {this.props.drizzle}
-              drizzleState = {this.state.drizzleState}/>}
-          />
+              drizzleState = {this.state.drizzleState}/>: <Redirect to='/signin'/> }
+          /> */}
+          
+          <Route exact path='/signin' render={
+            () => this.props.currentUser ? 
+                      (<Redirect to='/'/>)
+                        : (<SignInSignUpPage/>)
+                    
+                    }/>
+          
+          
           <Route path='/createPolicy' exact component={CreatePolicy} />
         </Switch>
       )
