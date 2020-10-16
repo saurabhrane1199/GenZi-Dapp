@@ -14,7 +14,16 @@ import FarmerDashboard from './pages/FarmerDashboard/farmerDashBoard.jsx'
 import {connect} from 'react-redux'
 
 
+const renderForwarding = (currentUser) => {
+    if(currentUser==null){
 
+    }else if(!currentUser.kyc){
+
+    }
+    else{
+
+    }
+}
 
 
 class App extends Component {
@@ -69,9 +78,38 @@ class App extends Component {
     }
     else {
       return (
-        <Switch>
-          {/* <Route path='/signin' exact component={ () => <SignInSignUpPage />} /> */}
-          <Route path='/' exact component={FarmerDashboard}/>
+        // <Switch>
+        //   <Route path='/' exact/>
+        //   <Route path='/signin' exact component={SignInSignUpPage}/>
+        //   <Route 
+        //       path='/kyc' exact 
+        //       render={() => this.props.currentUser ? 
+              
+        //       <KYC
+        //       drizzle = {this.props.drizzle}
+        //       drizzleState = {this.state.drizzleState}/> : <Redirect to='/signin'/> }
+        //   />
+
+
+        // </Switch>
+        
+        
+        
+        
+        
+        
+        
+        <Switch>          
+          <Route path='/db' exact
+          render={ () => 
+            <FarmerDashboard
+              drizzle = {this.props.drizzle}
+              drizzleState = {this.state.drizzleState}/>
+            }/>
+
+
+
+          {/* <Route path='/signin' exact component={ () => <SignInSignUpPage />} /> */}  
           {/* <Route path='/' exact component={MyContracts}/> */}
           
           {/* <Route 
@@ -84,7 +122,7 @@ class App extends Component {
           /> */}
 
           <Route 
-              path='/kyc' exact 
+              path='/' exact 
               render={() =>  
               
               <KYC

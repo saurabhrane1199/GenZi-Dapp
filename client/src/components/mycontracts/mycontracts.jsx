@@ -2,7 +2,17 @@ import React from 'react'
 import './mycontracts.styles.scss'
 
 
-const MyContracts = () => (
+function getData({drizzle,drizzleState}){
+    const contract = drizzle.contracts.genz;
+    const dataKey = contract.methods["myString"].cacheCall();
+    console.log(dataKey)
+
+}
+
+
+const MyContracts = ({drizzle,drizzleState}) =>{ 
+    return(
+
     <div className="table-wrapper">
         <table>
             <thead>
@@ -56,6 +66,6 @@ const MyContracts = () => (
             </tbody>
         </table>
     </div>
-)
+)}
 
 export default MyContracts

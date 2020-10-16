@@ -20,12 +20,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!snapShot.exists){
       const {displayName, email} = userAuth;
       const createdAt = new Date();
+      const kyc = false
       
       try {
        await userRef.set({
          displayName,
          email,
          createdAt,
+         kyc,
          ...additionalData,
        }) 
       } catch (error) {
@@ -35,6 +37,13 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
     return userRef
   }; 
+
+
+export const updateUserProfileDocument = async (id) => {
+  const userRef = firestore.collection('users').doc(id);// Set the 'capital' field of the city
+  const res = await userRef.update({kyc: true})
+  console.log(res)
+}
 
 
 firebase.initializeApp(firebaseConfig)

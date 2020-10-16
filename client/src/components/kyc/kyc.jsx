@@ -5,7 +5,9 @@ import ShortTextIcon from '@material-ui/icons/ShortText';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import {Link} from 'react-router-dom';
+import {updateUserProfileDocument}  from '../../firebase/firebase.utils.js'
+import {connect} from 'react-redux'
 
 
 
@@ -39,39 +41,11 @@ class KYC extends Component {
     const stackId = contract.methods["_register"].cacheSend(aadhar,name,role,{
       from : drizzleState.accounts[0]
     });
-    this.setState({ stackId });
+    this.setState({ stackId },updateUserProfileDocument(this.props.currentUser.id));
   }
 
 
 
-
-  // componentDidMount = async () => {
-  //   try {
-  //     const web3 = await getWeb3();
-  //     const accounts = await web3.eth.getAccounts();
-  //     const networkId = await web3.eth.net.getId();
-  //     const deployedNetwork = GenZContract.networks[networkId];
-  //     const instance = new web3.eth.Contract(
-  //       GenZContract.abi,
-  //       deployedNetwork && deployedNetwork.address,
-  //     );
-  //     this.setState({ web3, accounts, contract: instance });
-  //   } catch (error) {
-  //     alert(
-  //       `Failed to load web3, accounts, or contract. Check console for details.`,
-  //     );
-  //     console.error(error);
-  //   }
-  // };
-
-
-  // runExample = async (aadhar, name, role) => {
-  //   const { accounts, contract } = this.state;
-  //   const {history} =  this.props
-  //   await contract.methods._register(aadhar, name, role).send({ from: accounts[0] });
-  //   const response = await contract.methods.getDetails().call();
-  //   this.setState({ storageValue: response });
-  // }
 
 
   getTxStatus = () => {
@@ -145,11 +119,15 @@ class KYC extends Component {
 
           </div>
         </form>
-
+        <Link to="/db">About</Link>
       </div>
 
     )
   }
 }
 
-export default KYC
+const mapStateToProps = ({user}) => ({
+  currentUser : user.currentUser,
+})
+
+export default connect(mapStateToProps)(KYC)

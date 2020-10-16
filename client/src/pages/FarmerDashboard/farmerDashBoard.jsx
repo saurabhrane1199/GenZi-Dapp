@@ -6,16 +6,16 @@ import { Link } from 'react-router-dom';
 import MyContracts from '../../components/mycontracts/mycontracts'
 
 
-const  ConditionalRendering =  ({title}) => {
+const  ConditionalRendering =  ({drizzle,drizzleState,title}) => {
   if(title == 'contracts'){
-    return <MyContracts/>
+    return <MyContracts drizzle={drizzle} drizzleState={drizzleState}/>
   }
   else{
-    return <CreatePolicy/>
+    return <CreatePolicy drizzle={drizzle} drizzleState={drizzleState}/>
   }
 }
 
-const FarmerDashboard = () => {
+const FarmerDashboard = (props) => {
 
   const [key, setKey] = useState('contracts');
 
@@ -53,7 +53,7 @@ const FarmerDashboard = () => {
           </nav>
         </header>
         <div classNameName="content-columns">
-            <ConditionalRendering title={key}/>
+            <ConditionalRendering drizzle={props.drizzle} drizzleState={props.drizzleState} title={key}/>
         </div>
       </main>
     </div>)
