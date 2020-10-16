@@ -38,7 +38,7 @@ const FarmerDashboard = (props) => {
       <main>
         <header>
           <div className="breadcrumbs">
-            <Link href="#0/">Home</Link>
+            <Link to="/">Home</Link>
           </div>
           <h1 className="title">Pipeline</h1>
           <nav className="nav-tabs" id="nav-tabs">
@@ -52,7 +52,7 @@ const FarmerDashboard = (props) => {
             </Link>
           </nav>
         </header>
-        <div classNameName="content-columns">
+        <div className="content-columns">
             <ConditionalRendering drizzle={props.drizzle} drizzleState={props.drizzleState} title={key}/>
         </div>
       </main>

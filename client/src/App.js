@@ -14,16 +14,16 @@ import FarmerDashboard from './pages/FarmerDashboard/farmerDashBoard.jsx'
 import {connect} from 'react-redux'
 
 
-const renderForwarding = (currentUser) => {
-    if(currentUser==null){
+// const renderForwarding = (currentUser) => {
+//     if(currentUser==null){
 
-    }else if(!currentUser.kyc){
+//     }else if(!currentUser.kyc){
 
-    }
-    else{
+//     }
+//     else{
 
-    }
-}
+//     }
+// }
 
 
 class App extends Component {
