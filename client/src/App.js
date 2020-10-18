@@ -1,29 +1,14 @@
 import React, { Component } from "react";
-import SignInSignUpPage from './pages/onboarding/signInsignUp'
-import { Route, Switch, Redirect } from 'react-router-dom'
-import CreatePolicy from './components/policy_creation/policy_new'
-import MyContracts from './components/mycontracts/mycontracts'
+import SignIn from './components/signIn/signin'
+import { Route, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
 import KYC from './components/kyc/kyc'
 import "./App.css";
 // import { Switch } from "@material-ui/core";
 
-import {setCurrentUser} from './redux/user/user.actions'
-import {auth, createUserProfileDocument} from './firebase/firebase.utils.js';
+import { setCurrentUser } from './redux/user/user.actions'
+import { auth, createUserProfileDocument } from './firebase/firebase.utils.js';
 import FarmerDashboard from './pages/FarmerDashboard/farmerDashBoard.jsx'
-
-import {connect} from 'react-redux'
-
-
-// const renderForwarding = (currentUser) => {
-//     if(currentUser==null){
-
-//     }else if(!currentUser.kyc){
-
-//     }
-//     else{
-
-//     }
-// }
+import { connect } from 'react-redux'
 
 
 class App extends Component {
@@ -34,13 +19,14 @@ class App extends Component {
     super(props)
     this.state = {
       loading: true,
-      drizzleState: null
+      drizzleState: null,
+      currentUser : null
     };
   }
 
   componentDidMount() {
     const { drizzle } = this.props
-    const {setCurrentUser} = this.props
+    const { setCurrentUser } = this.props
     console.log(drizzle)
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -58,14 +44,18 @@ class App extends Component {
       setCurrentUser(userAuth);
     });
 
-    this.unsubscribe = drizzle.store.subscribe(() => {
+    this.unsubscribe = drizzle.store.subscribe(async () => {
       const drizzleState = drizzle.store.getState();
       if (drizzleState.drizzleStatus.initialized) {
         this.setState({ loading: false, drizzleState });
       }
 
-    })
+    });
+
+    
   }
+
+
 
   componentWillUnmount() {
     this.unsubscribe();
@@ -78,81 +68,51 @@ class App extends Component {
     }
     else {
       return (
-        // <Switch>
-        //   <Route path='/' exact/>
-        //   <Route path='/signin' exact component={SignInSignUpPage}/>
-        //   <Route 
-        //       path='/kyc' exact 
-        //       render={() => this.props.currentUser ? 
-              
-        //       <KYC
-        //       drizzle = {this.props.drizzle}
-        //       drizzleState = {this.state.drizzleState}/> : <Redirect to='/signin'/> }
-        //   />
+        <Router>
+          <Switch>
 
+            <Route path='/' exact
+              render={() => this.state.currentUser ? <Redirect to='/db' /> : <Redirect to='/signin' />}
 
-        // </Switch>
-        
-        
-        
-        
-        
-        
-        
-        <Switch>          
-          <Route path='/db' exact
-          render={ () => 
-            <FarmerDashboard
-              drizzle = {this.props.drizzle}
-              drizzleState = {this.state.drizzleState}/>
-            }/>
+            />
+
+            <Route
+              path='/db' exact
+              component={() =>
+                <FarmerDashboard
+                  drizzle={this.props.drizzle}
+                  drizzleState={this.state.drizzleState} />} />
 
 
 
-          {/* <Route path='/signin' exact component={ () => <SignInSignUpPage />} /> */}  
-          {/* <Route path='/' exact component={MyContracts}/> */}
-          
-          {/* <Route 
-              path='/kyc' exact 
-              render={() => this.props.currentUser ? 
-              
-              <KYC
-              drizzle = {this.props.drizzle}
-              drizzleState = {this.state.drizzleState}/>: <Redirect to='/signin'/> }
-          /> */}
 
-          <Route 
-              path='/' exact 
-              render={() =>  
-              
-              <KYC
-              drizzle = {this.props.drizzle}
-              drizzleState = {this.state.drizzleState}/> }
-          />
-          
-          <Route exact path='/signin' render={
-            () => this.props.currentUser ? 
-                      (<Redirect to='/'/>)
-                        : (<SignInSignUpPage/>)
-                    
-                    }/>
-          
-          
-          <Route path='/createPolicy' exact component={CreatePolicy} />
-        </Switch>
+            <Route path='/signin' exact component={SignIn} />
+
+            <Route
+              path='/kyc' exact
+              render={() =>
+                <KYC
+                  drizzle={this.props.drizzle}
+                  drizzleState={this.state.drizzleState} />}
+            />
+
+
+          </Switch>
+        </Router>
       )
 
-    }}
+    }
+  }
 }
 
 
 const mapStateToProps = ({user}) => ({
-  currentUser : user.currentUser,
+  currentUser: user.currentUser,
 })
 
 const mapDispatchToPros = dispatch => ({
-setCurrentUser : user => dispatch(setCurrentUser(user))
+  setCurrentUser: user => dispatch(setCurrentUser(user))
 })
-export default connect(mapStateToProps,mapDispatchToPros)(App);
+export default connect(mapStateToProps, mapDispatchToPros)(App);
 
 // export default App;

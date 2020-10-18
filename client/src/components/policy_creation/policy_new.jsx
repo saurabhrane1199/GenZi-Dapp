@@ -88,7 +88,7 @@ class CreatePolicy extends Component {
         return (
             <div className="Wrapper" style={{ width: "50%", margin: "0 auto" }}>
                 <Form onSubmit={this.handleOnSubmit}>
-                    <Form.Group style={{ width: "50%" }} controlId="farm_area">
+                    <Form.Group style={{ width: "50%" }}>
                         <Form.Label>Enter the Area of Your Farm</Form.Label>
                         <InputGroup className="mb-3">
                             <FormControl id="inlineFormInputGroupUsername2" type="number" placeholder="8855" aria-describedby="sqkms" onChange={this.handleOnChangeArea} />
@@ -98,12 +98,12 @@ class CreatePolicy extends Component {
                         </InputGroup>
                     </Form.Group>
 
-                    <Form.Group controlId="farm_location">
+                    <Form.Group>
                         <Form.Label>Please Enter the Location of Your Farm</Form.Label>
                         <Form.Control type="text" placeholder="Sangli" onChange={this.handleOnChangeLocation} />
                     </Form.Group>
 
-                    <Form.Group controlId="protection">
+                    <Form.Group>
                         <Form.Label>Insurance against</Form.Label>
                         <Form.Control as="select" onChange={this.handleOnChangeFlood}>
                             <option value="Flood">Flood</option>
@@ -111,12 +111,13 @@ class CreatePolicy extends Component {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="crop_id">
+                    <Form.Group>
                         <Form.Label>Please Enter the CropId</Form.Label>
                         <Form.Control type="number" placeholder="8" onChange={this.handleOnChangeCropId} />
                     </Form.Group>
 
-                    <Form.Group style={{ width: "50%" }} controlId="duration">
+                    <Form.Group style={{ width: "50%" }}
+                    >
                         <Form.Label>Enter the Duration of your Policy</Form.Label>
                         <InputGroup className="mb-3">
                             <FormControl id="duration" type="number" placeholder="12" aria-describedby="months" onChange={this.handleOnChangeDuration} />

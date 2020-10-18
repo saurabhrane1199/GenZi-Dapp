@@ -1,13 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import './farmer-dashboard.styles.scss'
 import CreatePolicy from '../../components/policy_creation/policy_new'
-import { Tabs, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import MyContracts from '../../components/mycontracts/mycontracts'
 
 
 const  ConditionalRendering =  ({drizzle,drizzleState,title}) => {
-  if(title == 'contracts'){
+  if(title === 'contracts'){
     return <MyContracts drizzle={drizzle} drizzleState={drizzleState}/>
   }
   else{
@@ -42,11 +41,11 @@ const FarmerDashboard = (props) => {
           </div>
           <h1 className="title">Pipeline</h1>
           <nav className="nav-tabs" id="nav-tabs">
-            <Link onClick={() => setKey('contracts')} className={key=='contracts' ? "active": ""}>
+            <Link onClick={() => setKey('contracts')} className={key==='contracts' ? "active": ""}>
               Contracts
               <span>14</span>
             </Link>
-            <Link onClick={() => setKey('createPolicy')}  className={key=='createPolicy' ? "active": ""}>
+            <Link onClick={() => setKey('createPolicy')}  className={key==='createPolicy' ? "active": ""}>
               Create Policy
               <span>24</span>
             </Link>
