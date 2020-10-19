@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './mycontracts.styles.scss'
+import PropTypes from 'prop-types'
+import {drizzleConnect} from '@drizzle/react-plugin';
 
 const TableRow = ({index, policy }) => 
 (<tr>
@@ -27,21 +29,26 @@ function convertUnixToDate(epoch){
 
 class MyContracts extends Component {
 
-    constructor(props) {
+    constructor(props,context) {
         super(props);
         this.state = {
             policies: []
         }
+        this.contracts = context.drizzle.contracts
     }
 
+
+    
     componentDidMount() {
         let userPolicies = []
-        this.props.drizzle.contracts.genz.methods.getPolicyUser()
+        
+        console.log(this.contracts)
+        this.contracts.genz.methods.getPolicyUser()
             .call()
             .then(res => {
                 
                 res.forEach(item => {
-                    this.props.drizzle.contracts.genz.methods.getPolicyDetails(item)
+                    this.contracts.genz.methods.getPolicyDetails(item)
                         .call()
                         .then(policyDetails => {
 
@@ -62,7 +69,7 @@ class MyContracts extends Component {
        
 
     render() {
-        
+            // return (<h5>{this.props.accounts[0]}</h5>)
         if ( this.state.policies.length==0) {
             return <div>Loading.....</div>
         }
@@ -96,7 +103,8 @@ class MyContracts extends Component {
     }
 }
 
+MyContracts.contextTypes ={
+    drizzle : PropTypes.object
+}
 
-
-
-export default MyContracts
+export default drizzleConnect(MyContracts,mapStateToProps);
