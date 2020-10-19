@@ -5,17 +5,17 @@ import {drizzleConnect} from '@drizzle/react-plugin';
 
 const TableRow = ({index, policy }) => 
 (<tr>
-        <td>{policy[0]}</td>
+        <td>{index + 1}</td>
+        <td>{policy[3]}</td>
         <td>{policy[4]}</td>
         <td>{policy[5]}</td>
-        <td>{policy[6]}</td>
-        <td>{convertUnixToDate(policy[7])}</td>
+        <td>{convertUnixToDate(policy[6])}</td>
         {/* <td>{policy[6]}</td> */}
-        <td>{convertUnixToDate(policy[8])}</td>
+        <td>{convertUnixToDate(policy[7])}</td>
+        <td>{policy[8]}</td>
         <td>{policy[9]}</td>
         <td>{policy[10]}</td>
         <td>{policy[11]}</td>
-        {/* <td>{policy[11]}</td> */}
     </tr>)
 
 function convertUnixToDate(epoch){
@@ -27,7 +27,7 @@ function convertUnixToDate(epoch){
 
 
 
-class MyContracts extends Component {
+class PortFolio extends Component {
 
     constructor(props,context) {
         super(props);
@@ -51,7 +51,7 @@ class MyContracts extends Component {
                     this.contracts.genz.methods.getPolicyDetails(item)
                         .call()
                         .then(policyDetails => {
-
+                            console.log(policyDetails)
                             this.setState(prevState => ({
                                 policies: [ ...prevState.policies,policyDetails ],
                             })) 
@@ -86,13 +86,14 @@ class MyContracts extends Component {
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Coverage</th>
+                                <th>Type</th>
                                 <th>CropId</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.policies.map( (policy, index) => <TableRow key={policy[0]} policy={policy}/>)
+                                this.state.policies.map( (policy, index) => <TableRow index={index} policy={policy}/>)
                             }
                         </tbody>
                     </table>
@@ -102,10 +103,10 @@ class MyContracts extends Component {
     }
 }
 
-MyContracts.contextTypes ={
+PortFolio.contextTypes ={
     drizzle : PropTypes.object
 }
 
 
 
-export default MyContracts;
+export default PortFolio;

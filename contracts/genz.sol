@@ -185,9 +185,13 @@ contract genz {
     }
     
     // function to get policy details of a particular id
-    function getPolicyDetails(uint _policyId) public view returns(address payable,address payable [] memory,uint[] memory,string memory,uint,uint,uint,uint,uint,uint,uint8,policyState){
+    function getPolicyDetails(uint _policyId) public view returns(uint,address payable,address payable [] memory,uint[] memory,string memory,uint,uint,uint,uint,uint,uint8,policyState){
         policy memory p = policies[_policyId];
-        return (p.user,p.cover,p.amtCover,p.location,p.premium,p.area,p.startTime,p.endTime,p.coverageAmount,p.forFlood,p.cropId,p.state);
+        return (_policyId, p.user,p.cover,p.amtCover,p.location,p.premium,p.area,p.startTime,p.endTime,p.coverageAmount,p.cropId,p.state);
+    }
+
+    function getPolicyLength() public view returns(uint){
+        return policies.length;
     }
     
     // function to request the farmer to view his details

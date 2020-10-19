@@ -3,6 +3,7 @@ import './signin.scss'
 import CustomButton from '../customButtom/customButton'
 import { signInWithGoogle } from '../../firebase/firebase.utils.js'
 import { useHistory } from "react-router-dom";
+import {connect }from 'react-redux'
 // import {auth} from 'firebase'
 
 
@@ -10,6 +11,7 @@ import { useHistory } from "react-router-dom";
 const SignIn = (props) => {
 
 	const history = useHistory();
+	console.log(props.currentUser)
 
 	function handleGoogleSignIn() {
 		signInWithGoogle().then(
@@ -45,5 +47,8 @@ const SignIn = (props) => {
 	)
 }
 
-export default SignIn
+const mapStateToProps = (state) => ({
+	currentUser : state.user.currentUser,
+  })
 
+  export default connect(mapStateToProps)(SignIn)

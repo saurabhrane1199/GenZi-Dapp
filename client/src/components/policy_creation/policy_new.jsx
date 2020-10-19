@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
+import PropTypes from 'prop-types'
+import {drizzleConnect} from '@drizzle/react-plugin'
 
 
 class CreatePolicy extends Component {
-    constructor(props) {
+    constructor(props,context) {
         super(props)
         this.state = {
             area: 0,
@@ -15,6 +17,7 @@ class CreatePolicy extends Component {
             duration: 0,
             stackId: null
         }
+        this.contracts = context.drizzle.contracts
     }
 
     handleOnChangeArea = (e) => {
@@ -63,24 +66,14 @@ class CreatePolicy extends Component {
 
     setValue = () => {
         const {area,location,forFlood,cropId,duration} = this.state
-        console.log(area,"Testing Data")
-        const { drizzle, drizzleState } = this.props;
-        const contract = drizzle.contracts.genz;
+        const contract = this.contracts.genz;
 
         const stackId = contract.methods["newPolicy"].cacheSend(area,forFlood,cropId,duration,location, {
-            from: drizzleState.accounts[0],
+            from: this.props.accounts[0],
             value:100
         });
-        this.setState({ stackId },console.log(this.getTxStatus()));
+        this.setState({ stackId });
     }
-
-    getTxStatus = () => {
-        const { transactions, transactionStack } = this.props.drizzleState;
-        const txHash = transactionStack[this.state.stackId];
-        if (!txHash) return null;
-        return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
-    };
-
 
     // int:area str:location bool:forFlood int:cropId int:Duration
 
@@ -138,5 +131,14 @@ class CreatePolicy extends Component {
     }
 }
 
+CreatePolicy.contextTypes ={
+    drizzle : PropTypes.object
+  }
+  
+  const mapStateToProps = (state) => ({
+    accounts : state.accounts,
+  })
+  
 
-export default CreatePolicy
+
+export default drizzleConnect(CreatePolicy, mapStateToProps)

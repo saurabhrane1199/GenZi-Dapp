@@ -8,14 +8,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {Link} from 'react-router-dom';
 import {updateUserProfileDocument}  from '../../firebase/firebase.utils.js'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import {drizzleConnect} from '@drizzle/react-plugin';
 
 
 
 class KYC extends Component {
 
-  state = {stackId:null}
-
-  constructor(props) {
+  constructor(props,context) {
     super(props)
     this.state = {
       aadhar: '',
@@ -27,40 +27,22 @@ class KYC extends Component {
       // accounts: null,
       // contract: null
     }
+    this.contracts = context.drizzle.contracts
+    this.initialized  = context.drizzle.initialized
 
   }
 
-  componentDidMount(){
-    console.log(this.props.drizzle,"Drizzle ar kyc")
-  }
+  // componentDidMount(){
+  //   console.log(this.props.drizzle,"Drizzle ar kyc")
+  // }
 
   setValue = (aadhar,name,role) => {
-    const {drizzle, drizzleState} = this.props;
-    const contract = drizzle.contracts.genz;
-
+    const contract = this.contracts.genz;
     const stackId = contract.methods["_register"].cacheSend(aadhar,name,role,{
-      from : drizzleState.accounts[0]
+      from : this.props.accounts[0]
     });
-    this.setState({ stackId },updateUserProfileDocument(this.props.currentUser.id));
+    this.setState({ stackId });
   }
-
-
-
-
-
-  getTxStatus = () => {
-    // get the transaction states from the drizzle state
-    const { transactions, transactionStack } = this.props.drizzleState;
-
-    // get the transaction hash using our saved `stackId`
-    const txHash = transactionStack[this.state.stackId];
-
-    // if transaction hash does not exist, don't display anything
-    if (!txHash) return null;
-
-    // otherwise, return the transaction status
-    return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
-  };
 
 
   handleOnChangeAadhar = (e) => {
@@ -126,8 +108,13 @@ class KYC extends Component {
   }
 }
 
-const mapStateToProps = ({user}) => ({
-  currentUser : user.currentUser,
+
+KYC.contextTypes ={
+  drizzle : PropTypes.object
+}
+
+const mapStateToProps = (state) => ({
+  accounts : state.accounts,
 })
 
-export default connect(mapStateToProps)(KYC)
+export default drizzleConnect(KYC,mapStateToProps)

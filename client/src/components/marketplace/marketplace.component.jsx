@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './mycontracts.styles.scss'
+import './marketplace.styles.scss'
 import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
 
@@ -27,45 +27,42 @@ function convertUnixToDate(epoch){
 
 
 
-class MyContracts extends Component {
+class MarketPlace extends Component {
 
     constructor(props,context) {
         super(props);
         this.state = {
-            policies: []
+            policies: [],
         }
         this.contracts = context.drizzle.contracts
     }
 
-
     
-    componentDidMount() {
-        let userPolicies = []
-        
-        console.log(this.contracts)
-        this.contracts.genz.methods.getPolicyUser()
+
+
+    componentDidMount() {        
+        this.contracts.genz.methods.getPolicyLength()
             .call()
-            .then(res => {
-                
-                res.forEach(item => {
-                    this.contracts.genz.methods.getPolicyDetails(item)
+            .then(len =>{
+                console.log(len)
+                for (let i = 0; i < len; i++) {
+                    this.contracts.genz.methods.getPolicyDetails(i)
                         .call()
                         .then(policyDetails => {
-
+                            console.log(policyDetails)
                             this.setState(prevState => ({
                                 policies: [ ...prevState.policies,policyDetails ],
                             })) 
 
                             
-                        })
+                        });
 
-                });
-                
-                
-            })
-             
-            
+                }
+
+            });
     }
+
+    
        
 
     render() {
@@ -102,10 +99,10 @@ class MyContracts extends Component {
     }
 }
 
-MyContracts.contextTypes ={
+MarketPlace.contextTypes ={
     drizzle : PropTypes.object
 }
 
 
 
-export default MyContracts;
+export default MarketPlace;

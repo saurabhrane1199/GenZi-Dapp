@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SignIn from './components/signIn/signin'
 import { Route, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
+import InvestorDashboard from './pages/InvestorDashboard/investorDashboard'
 import KYC from './components/kyc/kyc'
 import "./App.css";
 
@@ -63,10 +64,15 @@ class App extends Component {
           />
 
           <Route
-            path='/db' exact
+            path='/fdb' exact
             render={() =>
               <FarmerDashboard />} />
 
+
+          <Route
+            path='/idb' exact
+              render={()=>
+              <InvestorDashboard/>}/>
 
 
 
@@ -75,7 +81,7 @@ class App extends Component {
           <Route
             path='/kyc' exact
             render={() =>
-              <KYC />}
+              <KYC/>}
           />
 
 
