@@ -108,7 +108,7 @@ contract genz {
         require(p.policySum + msg.value <= p.coverageAmount, " Coverage amount exceeded ");
         
         details[deets[msg.sender]].bal -= int(msg.value);
-        balance += msg.value;
+        balance = balance + msg.value;
         userPolicies[msg.sender].push(_policyId);
         p.cover.push(msg.sender);
         p.amtCover.push(msg.value);
@@ -185,9 +185,18 @@ contract genz {
     }
     
     // function to get policy details of a particular id
-    function getPolicyDetails(uint _policyId) public view returns(uint,address payable,address payable [] memory,uint[] memory,string memory,uint,uint,uint,uint,uint,uint8,policyState){
+    // function to get policy details of a particular id
+    function getPolicyDetails(uint _policyId) public view returns(address payable,address payable[] memory,uint[] memory,string memory,uint[] memory,uint8,status){
         policy memory p = policies[_policyId];
-        return (_policyId, p.user,p.cover,p.amtCover,p.location,p.premium,p.area,p.startTime,p.endTime,p.coverageAmount,p.cropId,p.state);
+        uint[] memory a = new uint[](7);
+        a[0] = _policyId;
+        a[1] = (p.premium);
+        a[2] = (p.area);
+        a[3] = (p.startTime);
+        a[4] = (p.endTime);
+        a[5] = (p.coverageAmount);
+        a[6] = (p.policySum);
+        return (p.user,p.cover,p.amtCover,p.location,a,p.cropId,p.st);
     }
 
     function getPolicyLength() public view returns(uint){

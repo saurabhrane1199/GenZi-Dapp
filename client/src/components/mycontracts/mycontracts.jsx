@@ -1,27 +1,74 @@
-import React, { Component } from 'react'
+import React, { Component,useState } from 'react'
 import './mycontracts.styles.scss'
 import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
+import {Modal,Button} from 'react-bootstrap'
 
-const TableRow = ({index, policy }) => 
-(<tr>
-        <td>{policy[0]}</td>
-        <td>{policy[4]}</td>
+const TableRow = ({policy, handleClaim }) =>{
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+return (
+    <>
+    <tr>
+        <td>{policy[4][0]}</td>
+        <td>{policy[3]}</td>
+        <td>{policy[4][1]}</td>
+        <td>{policy[4][2]}</td>
+        <td>{convertUnixToDate(policy[4][3])}</td>
+        {/* <td>{policy[6]}</td> */}
+        <td>{convertUnixToDate(policy[4][4])}</td>
+        <td>{policy[4][5]}</td>
+        <td>{policy[4][6]}</td>
         <td>{policy[5]}</td>
         <td>{policy[6]}</td>
-        <td>{convertUnixToDate(policy[7])}</td>
-        {/* <td>{policy[6]}</td> */}
-        <td>{convertUnixToDate(policy[8])}</td>
-        <td>{policy[9]}</td>
-        <td>{policy[10]}</td>
-        <td>{policy[11]}</td>
+        <td><button onClick={() => handleClaim(policy[4][0])}>Claim</button><button onClick={handleShow}>Info</button></td>
         {/* <td>{policy[11]}</td> */}
-    </tr>)
+    </tr>
+    <Modal show={show} size="lg" onHide={handleClose} centered>
+    <Modal.Header closeButton>
+      <Modal.Title>Investment Details</Modal.Title>
+    </Modal.Header>
+    <Modal.Body >
+        <table style={{width:"100%"}}>
+            <thead style={{textAlign:"center"}}>
+                <th>Investor</th>
+                <th>Amount Invested</th>
+            </thead>
+            <tbody>
+                {policy[1].map((pol,index) =>
+                    (
+                        <tr>
+                            <td>{pol}</td>
+                            <td>{policy[2][index]}</td>
+                        </tr>
+                    )
+                )}
+            </tbody>
+        </table>
+
+
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={handleClose}>
+        Close
+      </Button>
+    </Modal.Footer>
+  </Modal>
+  </>)}
 
 function convertUnixToDate(epoch){
     let d = new Date(epoch*1000)
     return d.toLocaleDateString()
 
+}
+
+function convertErrorToJson(error){
+    const strerror = error
+    console.log(strerror)
+    return typeof(strerror)
 }
 
 
@@ -35,6 +82,14 @@ class MyContracts extends Component {
             policies: []
         }
         this.contracts = context.drizzle.contracts
+    }
+    
+    claimPolicy = (id) => {
+        console.log(`Id Clicked : ${id}`)
+        this.contracts.genz.methods.claim(id)
+        .call()
+        .then(res => console.log(`Success ${res}`)).catch(err => alert(`Error Occured${err}`))
+        
     }
 
 
@@ -51,7 +106,7 @@ class MyContracts extends Component {
                     this.contracts.genz.methods.getPolicyDetails(item)
                         .call()
                         .then(policyDetails => {
-
+                            console.log(policyDetails)
                             this.setState(prevState => ({
                                 policies: [ ...prevState.policies,policyDetails ],
                             })) 
@@ -70,9 +125,9 @@ class MyContracts extends Component {
 
     render() {
             // return (<h5>{this.props.accounts[0]}</h5>)
-        if ( this.state.policies.length==0) {
-            return <div>Loading.....</div>
-        }
+            if ( this.state.policies.length==0 || !this.state.policies) {
+                return <div style={{textAlign:"center"}}>No policies Found</div>
+            } 
         else {
             return (
                 <div className="table-wrapper">
@@ -86,13 +141,15 @@ class MyContracts extends Component {
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Coverage</th>
+                                <th>Policy Sum</th>
                                 <th>CropId</th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.policies.map( (policy, index) => <TableRow key={policy[0]} policy={policy}/>)
+                                this.state.policies.map( (policy, index) => <TableRow key={policy[4][0]} policy={policy} handleClaim={this.claimPolicy}/>)
                             }
                         </tbody>
                     </table>

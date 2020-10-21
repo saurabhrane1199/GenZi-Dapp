@@ -1,22 +1,24 @@
 import React, { Component } from 'react'
-import './mycontracts.styles.scss'
+import './portfolio.styles.scss'
 import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
 
-const TableRow = ({index, policy }) => 
+const TableRow = ({policy, handleClaim }) => 
 (<tr>
-        <td>{index + 1}</td>
-        <td>{policy[3]}</td>
-        <td>{policy[4]}</td>
-        <td>{policy[5]}</td>
-        <td>{convertUnixToDate(policy[6])}</td>
-        {/* <td>{policy[6]}</td> */}
-        <td>{convertUnixToDate(policy[7])}</td>
-        <td>{policy[8]}</td>
-        <td>{policy[9]}</td>
-        <td>{policy[10]}</td>
-        <td>{policy[11]}</td>
-    </tr>)
+    <td>{policy[4][0]}</td>
+    <td>{policy[3]}</td>
+    <td>{policy[4][1]}</td>
+    <td>{policy[4][2]}</td>
+    <td>{convertUnixToDate(policy[4][3])}</td>
+    {/* <td>{policy[6]}</td> */}
+    <td>{convertUnixToDate(policy[4][4])}</td>
+    <td>{policy[4][5]}</td>
+    <td>{policy[4][6]}</td>
+    <td>{policy[5]}</td>
+    <td>{policy[6]}</td>
+    {/* <td><button onClick={() => handleClaim(policy[0])}>Claim</button></td> */}
+    {/* <td>{policy[11]}</td> */}
+</tr>)
 
 function convertUnixToDate(epoch){
     let d = new Date(epoch*1000)
@@ -63,6 +65,7 @@ class PortFolio extends Component {
                 
                 
             })
+            .catch(err => alert(`Error : ${err}`))
              
             
     }
@@ -86,14 +89,14 @@ class PortFolio extends Component {
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Coverage</th>
-                                <th>Type</th>
+                                <th>Policy Sum</th>
                                 <th>CropId</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.policies.map( (policy, index) => <TableRow index={index} policy={policy}/>)
+                                this.state.policies.map( (policy, index) => <TableRow key={policy[4][0]} index={index} policy={policy}/>)
                             }
                         </tbody>
                     </table>

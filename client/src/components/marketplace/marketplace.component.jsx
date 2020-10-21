@@ -3,20 +3,22 @@ import './marketplace.styles.scss'
 import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
 
-const TableRow = ({index, policy }) => 
+const TableRow = ({index, policy, handleCover }) => 
 (<tr>
-        <td>{policy[0]}</td>
-        <td>{policy[4]}</td>
-        <td>{policy[5]}</td>
-        <td>{policy[6]}</td>
-        <td>{convertUnixToDate(policy[7])}</td>
-        {/* <td>{policy[6]}</td> */}
-        <td>{convertUnixToDate(policy[8])}</td>
-        <td>{policy[9]}</td>
-        <td>{policy[10]}</td>
-        <td>{policy[11]}</td>
-        {/* <td>{policy[11]}</td> */}
-    </tr>)
+    <td>{policy[4][0]}</td>
+    <td>{policy[3]}</td>
+    <td>{policy[4][1]}</td>
+    <td>{policy[4][2]}</td>
+    <td>{convertUnixToDate(policy[4][3])}</td>
+    {/* <td>{policy[6]}</td> */}
+    <td>{convertUnixToDate(policy[4][4])}</td>
+    <td>{policy[4][5]}</td>
+    <td>{policy[4][6]}</td>
+    <td>{policy[5]}</td>
+    <td>{policy[6]}</td>
+    <td><button onClick={() => handleCover(policy[4][0])}>Cover</button></td>
+    {/* <td>{policy[11]}</td> */}
+</tr>)
 
 function convertUnixToDate(epoch){
     let d = new Date(epoch*1000)
@@ -37,7 +39,16 @@ class MarketPlace extends Component {
         this.contracts = context.drizzle.contracts
     }
 
-    
+    coverForPolicy = (id) => {
+        const val = prompt("Enter Amount")
+        console.log(`Id Clicked : ${id}`)
+        this.contracts.genz.methods.coverForPolicy(id)
+        .send({
+            from: this.props.accounts[0],
+            value:val
+        }).then(res => console.log(`Success ${res}`))
+        
+    }
 
 
     componentDidMount() {        
@@ -67,8 +78,8 @@ class MarketPlace extends Component {
 
     render() {
             // return (<h5>{this.props.accounts[0]}</h5>)
-        if ( this.state.policies.length==0) {
-            return <div>Loading.....</div>
+        if ( this.state.policies.length==0 || !this.state.policies) {
+            return <div style={{textAlign:"center"}}>No policies Found</div>
         }
         else {
             return (
@@ -83,13 +94,17 @@ class MarketPlace extends Component {
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Coverage</th>
+                                <th>Policy Sum</th> 
                                 <th>CropId</th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.policies.map( (policy, index) => <TableRow key={policy[0]} policy={policy}/>)
+                                this.state.policies
+                                .filter(policy => policy[6]==0)
+                                .map( (policy, index) => <TableRow handleCover={this.coverForPolicy} key={policy[4][0]} policy={policy}/>)
                             }
                         </tbody>
                     </table>
@@ -104,5 +119,9 @@ MarketPlace.contextTypes ={
 }
 
 
+const mapStateToProps = (state) => ({
+    accounts : state.accounts,
+  })
+  
 
-export default MarketPlace;
+export default drizzleConnect(MarketPlace, mapStateToProps);

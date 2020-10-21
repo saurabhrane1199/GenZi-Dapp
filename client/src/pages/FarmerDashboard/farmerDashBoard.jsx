@@ -20,6 +20,17 @@ class FarmerDashboard extends Component{
     key : 'contracts'
   }
 
+  constructor(props,context){
+    super(props)
+    this.contracts = context.drizzle.contracts
+  }
+
+  componentDidMount(){
+    this.contracts.genz.methods.getBalanceUser()
+            .call()
+            .then(res => console.log(res))
+  }
+
   render(){
     return (
       <div className="site-wrap">
@@ -60,6 +71,11 @@ class FarmerDashboard extends Component{
       </div>)
     
   }
+}
+
+
+FarmerDashboard.contextTypes ={
+  drizzle : PropTypes.object
 }
 
 

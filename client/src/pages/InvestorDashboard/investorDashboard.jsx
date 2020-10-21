@@ -3,13 +3,14 @@ import './investordb.styles.scss'
 import CreatePolicy from '../../components/policy_creation/policy_new'
 import { Link } from 'react-router-dom';
 import MyContracts from '../../components/mycontracts/mycontracts'
-import {drizzleConnect} from 'drizzle-react';
+import Portfolio from '../../components/portfolio/portfolio.component'
+// import {drizzleConnect} from 'drizzle-react';
 import MarketPlace from '../../components/marketplace/marketplace.component';
 
 
 const  ConditionalRendering =  ({title}) => {
   if(title === 'contracts'){
-    return <MyContracts/>
+    return <Portfolio/>
   }
   else{
     return <MarketPlace/>
@@ -20,6 +21,17 @@ class InvestorDashboard extends Component{
   state = {
     key : 'contracts'
   }
+
+  constructor(props,context){
+    super(props)
+    this.contracts = context.drizzle.contracts
+  }
+
+  componentDidMount(){
+    this.contracts.genz.methods.getBalanceUser()
+            .call()
+            .then(res => console.log(res))
+  } 
 
   render(){
     return (
@@ -61,6 +73,10 @@ class InvestorDashboard extends Component{
       </div>)
     
   }
+}
+
+InvestorDashboard.contextTypes ={
+  drizzle : PropTypes.object
 }
 
 
