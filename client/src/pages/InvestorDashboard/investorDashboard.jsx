@@ -6,6 +6,7 @@ import MyContracts from '../../components/mycontracts/mycontracts'
 import Portfolio from '../../components/portfolio/portfolio.component'
 // import {drizzleConnect} from 'drizzle-react';
 import MarketPlace from '../../components/marketplace/marketplace.component';
+import PropTypes from 'prop-types'
 
 
 const  ConditionalRendering =  ({title}) => {
@@ -18,19 +19,21 @@ const  ConditionalRendering =  ({title}) => {
 }
 
 class InvestorDashboard extends Component{
-  state = {
-    key : 'contracts'
-  }
+  
 
   constructor(props,context){
     super(props)
+    this.state = {
+      key : 'contracts',
+      balance : 0
+    }
     this.contracts = context.drizzle.contracts
   }
 
   componentDidMount(){
     this.contracts.genz.methods.getBalanceUser()
             .call()
-            .then(res => console.log(res))
+            .then(res => this.setState({balance:res}))
   } 
 
   render(){
@@ -45,8 +48,16 @@ class InvestorDashboard extends Component{
           </div>
   
           <div className="note">
-            <h3>Your Monthly Report</h3>
-            <p>Get the info about all your deals, pros, cons. And build your roadmap.</p>
+          <h3>Your Balance</h3>
+            {
+              this.state.balance >= 0 ? 
+              (<p style={{fontSize:"20px",fontWeight:"bold",color:`#80ff80`}}>
+              <span><i class="fa fa-rupee"></i></span>&nbsp;{Math.abs(this.state.balance)}</p>) 
+              :
+              <p style={{fontSize:"20px",fontWeight:"bold",color:`#ff8566`}}>
+              -<span><i class="fa fa-rupee"></i></span>&nbsp;{Math.abs(this.state.balance)}</p>
+            }
+            
           </div>
         </nav>
         <main>

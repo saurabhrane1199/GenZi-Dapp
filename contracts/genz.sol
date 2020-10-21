@@ -202,6 +202,16 @@ contract genz {
     function getPolicyLength() public view returns(uint){
         return policies.length;
     }
+
+
+    function login() public view returns(uint){
+        for (uint i=0; i<details.length; i++){
+            if(details[i].id == msg.sender){
+                return 1;
+            }
+        }
+        return 0;
+    }
     
     // function to request the farmer to view his details
     /*function requestFarmer(address farmerAddress) public {

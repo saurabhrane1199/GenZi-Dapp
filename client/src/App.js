@@ -22,36 +22,36 @@ class App extends Component {
     super(props)
   }
 
-  componentDidMount() {
+  // componentDidMount() {
 
-    const { setCurrentUser } = this.props
-
-
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        });
-      }
-
-      setCurrentUser(userAuth);
-    });
+  //   const { setCurrentUser } = this.props
 
 
+  //   this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  //     if (userAuth) {
+  //       const userRef = await createUserProfileDocument(userAuth);
 
+  //       userRef.onSnapshot(snapShot => {
+  //         setCurrentUser({
+  //           id: snapShot.id,
+  //           ...snapShot.data()
+  //         });
+  //       });
+  //     }
 
-  }
+  //     setCurrentUser(userAuth);
+  //   });
 
 
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+
+  // }
+
+
+
+  // componentWillUnmount() {
+  //   this.unsubscribeFromAuth();
+  // }
 
   render() {
     return (
@@ -59,7 +59,7 @@ class App extends Component {
         <Switch>
 
           <Route path='/' exact
-            render={() => true ? <Redirect to='/db' /> : <Redirect to='/signin' />}
+            render={() => <Redirect to='/kyc' />}
 
           />
 
@@ -93,14 +93,14 @@ class App extends Component {
 }
 
 
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
-})
+// const mapStateToProps = (state) => ({
+//   currentUser: state.user.currentUser,
+// })
 
-const mapDispatchToPros = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-})
+// const mapDispatchToPros = dispatch => ({
+//   setCurrentUser: user => dispatch(setCurrentUser(user))
+// })
 
-export default connect(mapStateToProps, mapDispatchToPros)(App);
+// export default connect(mapStateToProps, mapDispatchToPros)(App);
 
-// export default App;
+export default App;

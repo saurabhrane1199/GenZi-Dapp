@@ -7,6 +7,7 @@ import {drizzleConnect} from '@drizzle/react-plugin'
 
 
 class CreatePolicy extends Component {
+
     constructor(props,context) {
         super(props)
         this.state = {
@@ -15,14 +16,27 @@ class CreatePolicy extends Component {
             forFlood: 1,
             cropId: 0,
             duration: 0,
+            premium:0,
             stackId: null
         }
+        this.mf = {
+            0 : 1,
+            1 : 2
+        }
+
         this.contracts = context.drizzle.contracts
+
+    }
+
+    calcPremiumAmount(area, cropId){
+        return area*this.mf[cropId]
     }
 
     handleOnChangeArea = (e) => {
+        const premium = this.calcPremiumAmount(e.target.value,this.state.cropId)
         this.setState({
-            area: Number(e.target.value)
+            area: Number(e.target.value),
+            premium : premium
         })
 
     }
@@ -33,22 +47,24 @@ class CreatePolicy extends Component {
         })
     }
 
-    handleOnChangeFlood = (e) => {
-        let flag = 1
-        const value = e.target.value
-        if (value === "Flood") {
-            flag = 1
-        } else {
-            flag = 0
-        }
-        this.setState({
-            forFlood: flag
-        })
-    }
+    // handleOnChangeFlood = (e) => {
+    //     let flag = 1
+    //     const value = e.target.value
+    //     if (value === "Flood") {
+    //         flag = 1
+    //     } else {
+    //         flag = 0
+    //     }
+    //     this.setState({
+    //         forFlood: flag
+    //     })
+    // }
 
     handleOnChangeCropId = (e) => {
+        const premium = this.calcPremiumAmount(this.state.area,e.target.value)
         this.setState({
-            cropId: Number(e.target.value)
+            cropId: Number(e.target.value),
+            premium : premium
         })
     }
 
@@ -61,6 +77,28 @@ class CreatePolicy extends Component {
     handleOnSubmit = (e) => {
         e.preventDefault();
         this.setValue()
+        this.setState({
+            area: 0,
+            location: 'Mumbai',
+            forFlood: 1,
+            cropId: 0,
+            duration: 0,
+            premium:0,
+            stackId: null
+        })
+
+    }
+
+    handleReset = (e) => {
+        this.setState({
+            area: 0,
+            location: 'Mumbai',
+            forFlood: 1,
+            cropId: 0,
+            duration: 0,
+            premium:0,
+            stackId: null
+        })
 
     }
 
@@ -70,7 +108,7 @@ class CreatePolicy extends Component {
 
         const stackId = contract.methods["newPolicy"].cacheSend(area,forFlood,cropId,duration,location, {
             from: this.props.accounts[0],
-            value:100
+            value: (this.state.premium)
         });
         this.setState({ stackId });
     }
@@ -80,7 +118,7 @@ class CreatePolicy extends Component {
     render() {
         return (
             <div className="Wrapper" style={{ width: "50%", margin: "0 auto" }}>
-                <Form onSubmit={this.handleOnSubmit}>
+                <Form onSubmit={this.handleOnSubmit} onReset={this.handleReset}>
                     <Form.Group style={{ width: "50%" }}>
                         <Form.Label>Enter the Area of Your Farm</Form.Label>
                         <InputGroup className="mb-3">
@@ -96,17 +134,17 @@ class CreatePolicy extends Component {
                         <Form.Control type="text" placeholder="Sangli" onChange={this.handleOnChangeLocation} />
                     </Form.Group>
 
-                    <Form.Group>
+                    {/* <Form.Group>
                         <Form.Label>Insurance against</Form.Label>
                         <Form.Control as="select" onChange={this.handleOnChangeFlood}>
                             <option value="Flood">Flood</option>
                             <option value="Drought">Drought</option>
                         </Form.Control>
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group>
                         <Form.Label>Please Enter the CropId</Form.Label>
-                        <Form.Control type="number" placeholder="8" onChange={this.handleOnChangeCropId} />
+                        <Form.Control type="number" placeholder="0" onChange={this.handleOnChangeCropId} />
                     </Form.Group>
 
                     <Form.Group style={{ width: "50%" }}
@@ -120,10 +158,16 @@ class CreatePolicy extends Component {
                         </InputGroup>
                     </Form.Group>
 
-
-
-                    <Button variant="primary" type="submit">Submit</Button>
+                    <Button variant="primary" type="submit">Submit</Button>&nbsp;&nbsp;&nbsp;<Button variant="secondary" type="reset">Reset</Button>
                 </Form>
+
+                <div style={{padding:"20px", textAlign:"center"}}>
+                    {this.state.premium ? <h4>
+                        
+                        You need to pay the following premium to create this policy {this.state.premium}
+                    </h4> : <h4>Please enter valid details to calculate premium</h4>}
+                    
+                </div>
 
             </div>
 

@@ -87,7 +87,7 @@ class MyContracts extends Component {
     claimPolicy = (id) => {
         console.log(`Id Clicked : ${id}`)
         this.contracts.genz.methods.claim(id)
-        .call()
+        .send({from : this.props.accounts[0]})
         .then(res => console.log(`Success ${res}`)).catch(err => alert(`Error Occured${err}`))
         
     }
@@ -164,5 +164,9 @@ MyContracts.contextTypes ={
 }
 
 
+const mapStateToProps = (state) => ({
+    accounts : state.accounts,
+  })
 
-export default MyContracts;
+
+export default drizzleConnect(MyContracts, mapStateToProps);

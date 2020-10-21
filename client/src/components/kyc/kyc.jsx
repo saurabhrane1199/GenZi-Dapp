@@ -10,6 +10,7 @@ import {updateUserProfileDocument}  from '../../firebase/firebase.utils.js'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
+import {withRouter} from 'react-router-dom'
 
 
 
@@ -32,16 +33,62 @@ class KYC extends Component {
 
   }
 
-  // componentDidMount(){
-  //   console.log(this.props.drizzle,"Drizzle ar kyc")
-  // }
+  componentDidMount(){
+    this.contracts.genz.methods.login()
+            .call()
+            .then(res => {
+              if(res==1){
+                this.contracts.genz.methods.getDetails()
+                    .call()
+                    .then(res => {
+                      let currentUser = this.createUser(res[0],res[1],res[2])
+                      this.redirectLogin(currentUser)
+                    }
+                    
+                    )
+
+              }
+              else{
+                console.log("Eh do kyc first")
+              }
+            })
+    
+    
+    
+  }
+
+  redirectLogin(currentUser){
+    if(currentUser['role']=="0"){
+      // this.props.history.pushState({currentUser},'/fdb')
+      this.props.history.push('/fdb',
+        {currentUser : currentUser}
+      
+      )
+    }
+    else{
+      this.props.history.push('/idb')
+    }
+  }
+
+  createUser(aadhar,user,role){
+    const currentUser = {
+      aadhar,
+      user,
+      role,
+    }
+    return currentUser
+
+  }
 
   setValue = (aadhar,name,role) => {
     const contract = this.contracts.genz;
     const stackId = contract.methods["_register"].cacheSend(aadhar,name,role,{
       from : this.props.accounts[0]
-    });
-    this.setState({ stackId });
+    }).then(res=>{
+      let currentUser = this.createUser(aadhar,name,role)
+      this.redirectLogin(currentUser)
+    })
+    
   }
 
 
@@ -117,4 +164,4 @@ const mapStateToProps = (state) => ({
   accounts : state.accounts,
 })
 
-export default drizzleConnect(KYC,mapStateToProps)
+export default withRouter(drizzleConnect(KYC,mapStateToProps))
