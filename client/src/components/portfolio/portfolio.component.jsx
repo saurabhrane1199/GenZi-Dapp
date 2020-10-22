@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './portfolio.styles.scss'
 import PropTypes from 'prop-types'
-import {drizzleConnect} from '@drizzle/react-plugin';
+
 
 const TableRow = ({policy, handleClaim }) => 
 (<tr>
@@ -42,8 +42,7 @@ class PortFolio extends Component {
 
     
     componentDidMount() {
-        let userPolicies = []
-        
+    
         console.log(this.contracts)
         this.contracts.genz.methods.getPolicyUser()
             .call()
@@ -72,8 +71,7 @@ class PortFolio extends Component {
        
 
     render() {
-            // return (<h5>{this.props.accounts[0]}</h5>)
-        if ( this.state.policies.length==0) {
+        if ( this.state.policies.length===0) {
             return <div>Loading.....</div>
         }
         else {
@@ -106,7 +104,7 @@ class PortFolio extends Component {
     }
 }
 
-PortFolio.contextTypes ={
+PortFolio.contextTypes = {
     drizzle : PropTypes.object
 }
 

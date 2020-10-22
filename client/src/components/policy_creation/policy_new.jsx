@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types'
-import {drizzleConnect} from '@drizzle/react-plugin'
+import {drizzleConnect} from '@drizzle/react-plugin';
+import {withRouter} from 'react-router-dom';
 
 
 class CreatePolicy extends Component {
@@ -104,13 +105,12 @@ class CreatePolicy extends Component {
 
     setValue = () => {
         const {area,location,forFlood,cropId,duration} = this.state
-        const contract = this.contracts.genz;
-
-        const stackId = contract.methods["newPolicy"].cacheSend(area,forFlood,cropId,duration,location, {
+        this.contracts.genz.methods.newPolicy(area,forFlood,cropId,duration,location).send({
             from: this.props.accounts[0],
             value: (this.state.premium)
-        });
-        this.setState({ stackId });
+        })
+        // .then(res => this.props.history.push('/kyc'));
+        
     }
 
     // int:area str:location bool:forFlood int:cropId int:Duration
@@ -185,4 +185,4 @@ CreatePolicy.contextTypes ={
   
 
 
-export default drizzleConnect(CreatePolicy, mapStateToProps)
+export default withRouter(drizzleConnect(CreatePolicy, mapStateToProps))

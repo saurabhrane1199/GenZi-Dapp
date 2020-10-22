@@ -6,8 +6,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {Link} from 'react-router-dom';
-import {updateUserProfileDocument}  from '../../firebase/firebase.utils.js'
-import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
 import {withRouter} from 'react-router-dom'
@@ -37,7 +35,7 @@ class KYC extends Component {
     this.contracts.genz.methods.login()
             .call()
             .then(res => {
-              if(res==1){
+              if(res===1){
                 this.contracts.genz.methods.getDetails()
                     .call()
                     .then(res => {
@@ -58,22 +56,23 @@ class KYC extends Component {
   }
 
   redirectLogin(currentUser){
-    if(currentUser['role']=="0"){
-      // this.props.history.pushState({currentUser},'/fdb')
+    if(currentUser['role']==="0"){
       this.props.history.push('/fdb',
         {currentUser : currentUser}
       
       )
     }
     else{
-      this.props.history.push('/idb')
+      this.props.history.push('/idb',
+      {currentUser : currentUser}
+      )
     }
   }
 
-  createUser(aadhar,user,role){
+  createUser(aadhar,name,role){
     const currentUser = {
       aadhar,
-      user,
+      name,
       role,
     }
     return currentUser
@@ -81,8 +80,7 @@ class KYC extends Component {
   }
 
   setValue = (aadhar,name,role) => {
-    const contract = this.contracts.genz;
-    const stackId = contract.methods["_register"].cacheSend(aadhar,name,role,{
+    this.contracts.genz.methods._register(aadhar,name,role).send({
       from : this.props.accounts[0]
     }).then(res=>{
       let currentUser = this.createUser(aadhar,name,role)

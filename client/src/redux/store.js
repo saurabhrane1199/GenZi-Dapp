@@ -6,7 +6,7 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import rootSaga from './rootSaga'
 import createSagaMiddleware from 'redux-saga'
-import { generateContractsInitialState, generateStore } from '@drizzle/store'
+import { generateContractsInitialState} from '@drizzle/store'
 import drizzleOptions from './drizzleOptions'
 import { createBrowserHistory } from 'history';
 

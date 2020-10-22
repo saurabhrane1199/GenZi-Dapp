@@ -16,7 +16,7 @@ const TableRow = ({index, policy, handleCover }) =>
     <td>{policy[4][6]}</td>
     <td>{policy[5]}</td>
     <td>{policy[6]}</td>
-    <td><button onClick={() => handleCover(policy[4][0])}>Cover</button></td>
+    <td><button onClick={() => handleCover(policy[4][0],policy[4][5],policy[4][6])}>Cover</button></td>
     {/* <td>{policy[11]}</td> */}
 </tr>)
 
@@ -39,9 +39,13 @@ class MarketPlace extends Component {
         this.contracts = context.drizzle.contracts
     }
 
-    coverForPolicy = (id) => {
+    coverForPolicy = (id, coverageAmt, policySum) => {
         const val = prompt("Enter Amount")
-        console.log(`Id Clicked : ${id}`)
+        const remainingSum = coverageAmt - policySum
+        if(val > remainingSum){
+            alert(`Please Enter a valid amount(Less than or equal to ${remainingSum} )`)
+            return
+        }
         this.contracts.genz.methods.coverForPolicy(id)
         .send({
             from: this.props.accounts[0],
@@ -73,12 +77,13 @@ class MarketPlace extends Component {
             });
     }
 
+
     
        
 
     render() {
             // return (<h5>{this.props.accounts[0]}</h5>)
-        if ( this.state.policies.length==0 || !this.state.policies) {
+        if ( this.state.policies.length===0 || !this.state.policies) {
             return <div style={{textAlign:"center"}}>No policies Found</div>
         }
         else {
@@ -103,7 +108,7 @@ class MarketPlace extends Component {
                         <tbody>
                             {
                                 this.state.policies
-                                .filter(policy => policy[6]==0)
+                                .filter(policy => policy[6]===0)
                                 .map( (policy, index) => <TableRow handleCover={this.coverForPolicy} key={policy[4][0]} policy={policy}/>)
                             }
                         </tbody>

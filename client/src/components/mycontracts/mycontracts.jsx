@@ -24,7 +24,15 @@ return (
         <td>{policy[4][6]}</td>
         <td>{policy[5]}</td>
         <td>{policy[6]}</td>
-        <td><button onClick={() => handleClaim(policy[4][0])}>Claim</button><button onClick={handleShow}>Info</button></td>
+        <td style={{textAlign:"center"}}>
+            {policy[6]===1 ? 
+            <button className="claimButton" onClick={() => handleClaim(policy[4][0])}>Claim</button> : ''}
+            <i 
+                className="fa fa-info-circle"
+                onClick={handleShow}
+                style = {{fontSize:"20px",color:"#8ad0ff",cursor:"pointer"}}
+            />
+        </td>
         {/* <td>{policy[11]}</td> */}
     </tr>
     <Modal show={show} size="lg" onHide={handleClose} centered>
@@ -65,14 +73,6 @@ function convertUnixToDate(epoch){
 
 }
 
-function convertErrorToJson(error){
-    const strerror = error
-    console.log(strerror)
-    return typeof(strerror)
-}
-
-
-
 
 class MyContracts extends Component {
 
@@ -94,9 +94,7 @@ class MyContracts extends Component {
 
 
     
-    componentDidMount() {
-        let userPolicies = []
-        
+    componentDidMount() {        
         console.log(this.contracts)
         this.contracts.genz.methods.getPolicyUser()
             .call()
@@ -125,7 +123,7 @@ class MyContracts extends Component {
 
     render() {
             // return (<h5>{this.props.accounts[0]}</h5>)
-            if ( this.state.policies.length==0 || !this.state.policies) {
+            if ( this.state.policies.length===0 || !this.state.policies) {
                 return <div style={{textAlign:"center"}}>No policies Found</div>
             } 
         else {

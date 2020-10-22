@@ -1,17 +1,19 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 
-// *, *:before, *:after {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: border-box;
-// }
 
-// body {
-//   background: #105469;
-//   font-family: 'Open Sans', sans-serif;
-// }
+.claimButton{
+  border: None;
+  border-radius: 20px;
+  padding: 5px 2px;
+  margin: 0px 15px;
+  width: 80px;
+  background-color: #00ffaa;
+}
+
+
+
 .table-wrapper{
-    margin-top: 5%;
+    margin-top: 0% !important;
     height: 50vh;
 }
 
@@ -22,7 +24,8 @@ table {
   border-radius: 0.3em;
   border-collapse: collapse;
   // margin: 0.5em;
-  font-size: 16px;
+  font-size: 16px;  
+  
 }
 th {
   border-bottom: 1px solid #364043;
@@ -49,3 +52,5 @@ tbody tr:hover {
   background: #014055;
   transform: scale(1.015);
 }
+
+
