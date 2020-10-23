@@ -35,7 +35,7 @@ class KYC extends Component {
     this.contracts.genz.methods.login()
             .call()
             .then(res => {
-              if(res===1){
+              if(res==='1'){
                 this.contracts.genz.methods.getDetails()
                     .call()
                     .then(res => {
@@ -56,7 +56,7 @@ class KYC extends Component {
   }
 
   redirectLogin(currentUser){
-    if(currentUser['role']==="0"){
+    if(currentUser['role']==0){
       this.props.history.push('/fdb',
         {currentUser : currentUser}
       

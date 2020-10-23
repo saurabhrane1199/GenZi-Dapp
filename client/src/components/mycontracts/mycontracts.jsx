@@ -23,9 +23,9 @@ return (
         <td>{policy[4][5]}</td>
         <td>{policy[4][6]}</td>
         <td>{policy[5]}</td>
-        <td>{policy[6]}</td>
+        <td>{policy[6]==0 ? "Open" : "Closed"}</td>
         <td style={{textAlign:"center"}}>
-            {policy[6]===1 ? 
+            {policy[6]==1 ? 
             <button className="claimButton" onClick={() => handleClaim(policy[4][0])}>Claim</button> : ''}
             <i 
                 className="fa fa-info-circle"

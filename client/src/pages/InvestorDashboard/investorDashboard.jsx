@@ -28,7 +28,7 @@ class InvestorDashboard extends Component{
     if(!this.props.location.state){
       this.props.history.push('/kyc')
     }
-    else if(this.currentUser && this.currentUser.role === "0"){
+    else if(this.currentUser && this.currentUser.role == 0){
       this.props.history.push('/fdb',
       {currentUser : this.currentUser}
       )
@@ -69,10 +69,10 @@ class InvestorDashboard extends Component{
             {
               this.state.balance >= 0 ? 
               (<p style={{fontSize:"20px",fontWeight:"bold",color:`#80ff80`}}>
-              <span><i class="fa fa-rupee"></i></span>&nbsp;{Math.abs(this.state.balance)}</p>) 
+              <span><i className="fa fa-rupee"></i></span>&nbsp;{Math.abs(this.state.balance)}</p>) 
               :
               <p style={{fontSize:"20px",fontWeight:"bold",color:`#ff8566`}}>
-              -<span><i class="fa fa-rupee"></i></span>&nbsp;{Math.abs(this.state.balance)}</p>
+              -<span><i className="fa fa-rupee"></i></span>&nbsp;{Math.abs(this.state.balance)}</p>
             }
             
           </div>

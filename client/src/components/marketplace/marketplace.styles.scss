@@ -1,15 +1,18 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 
-// *, *:before, *:after {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: border-box;
-// }
 
-// body {
-//   background: #105469;
-//   font-family: 'Open Sans', sans-serif;
-// }
+.seedicon{
+  width: 35px;
+  height: auto;
+}
+
+.coverButton{
+  background-color : transparent !important;
+  border: none;
+}
+
+
+
 .table-wrapper{
     margin-top: 5%;
     height: 50vh;

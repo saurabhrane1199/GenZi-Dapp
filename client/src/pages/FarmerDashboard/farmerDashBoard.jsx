@@ -29,7 +29,7 @@ class FarmerDashboard extends Component{
     if(!this.props.location.state){
       this.props.history.push('/kyc')
     }
-    else if(this.currentUser && this.currentUser.role === "1"){
+    else if(this.currentUser && this.currentUser.role == 1){
       this.props.history.push('/idb',
       {currentUser : this.currentUser}
       )

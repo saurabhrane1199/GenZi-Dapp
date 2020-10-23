@@ -15,7 +15,7 @@ const TableRow = ({policy, handleClaim }) =>
     <td>{policy[4][5]}</td>
     <td>{policy[4][6]}</td>
     <td>{policy[5]}</td>
-    <td>{policy[6]}</td>
+    <td>{policy[6]==0 ? "Open" : "Closed"}</td>
     {/* <td><button onClick={() => handleClaim(policy[0])}>Claim</button></td> */}
     {/* <td>{policy[11]}</td> */}
 </tr>)
@@ -94,7 +94,7 @@ class PortFolio extends Component {
                         </thead>
                         <tbody>
                             {
-                                this.state.policies.map( (policy, index) => <TableRow key={policy[4][0]} index={index} policy={policy}/>)
+                                this.state.policies.map( (policy, index) => <TableRow key={index} index={index} policy={policy}/>)
                             }
                         </tbody>
                     </table>
