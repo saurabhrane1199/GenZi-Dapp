@@ -4,6 +4,16 @@ import PropTypes from 'prop-types'
 import {drizzleConnect} from '@drizzle/react-plugin';
 import {Modal,Button} from 'react-bootstrap'
 
+
+const PolicyAction = ({policyStatus,handleClaim, id}) => {
+    if(policyStatus == 1){
+        return <button className="claimButton" onClick={() => handleClaim(id)}>Claim</button>
+    }
+    else{
+        return <button className="claimButton" style={{backgroundColor:"#e80f00", color:"white", width:"150px"}}>Policy Claimed</button>
+    }
+}
+
 const TableRow = ({policy, handleClaim }) =>{
 
     const [show, setShow] = useState(false);
@@ -25,8 +35,9 @@ return (
         <td>{policy[5]}</td>
         <td>{policy[6]==0 ? "Open" : "Closed"}</td>
         <td style={{textAlign:"center"}}>
-            {policy[6]==1 ? 
-            <button className="claimButton" onClick={() => handleClaim(policy[4][0])}>Claim</button> : ''}
+            {policy[6]==1 ?
+            <PolicyAction policyStatus={policy[7]} handleClaim={handleClaim} id={policy[4][0]} />
+            : ''}
             <i 
                 className="fa fa-info-circle"
                 onClick={handleShow}
@@ -40,7 +51,8 @@ return (
       <Modal.Title>Investment Details</Modal.Title>
     </Modal.Header>
     <Modal.Body >
-        <table style={{width:"100%"}}>
+        {
+            policy[1].length>0 ? (<table style={{width:"100%"}}>
             <thead style={{textAlign:"center"}}>
                 <th>Investor</th>
                 <th>Amount Invested</th>
@@ -53,9 +65,14 @@ return (
                             <td>{policy[2][index]}</td>
                         </tr>
                     )
-                )}
+                )}  
             </tbody>
-        </table>
+        </table>) : <h4>No Investments found</h4>  
+
+
+
+        }
+        
 
 
     </Modal.Body>
@@ -88,7 +105,12 @@ class MyContracts extends Component {
         console.log(`Id Clicked : ${id}`)
         this.contracts.genz.methods.claim(id)
         .send({from : this.props.accounts[0]})
-        .then(res => console.log(`Success ${res}`)).catch(err => alert(`Error Occured${err}`))
+        .then(res => {
+            console.log(`Success ${res}`)
+            window.location.reload(true)
+        
+        })
+        .catch(err => alert(`Error Occured${err}`))
         
     }
 

@@ -146,7 +146,6 @@ class KYC extends Component {
 
           </div>
         </form>
-        <Link to="/db">About</Link>
       </div>
 
     )

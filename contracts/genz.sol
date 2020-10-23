@@ -186,7 +186,7 @@ contract genz {
     
     // function to get policy details of a particular id
     // function to get policy details of a particular id
-    function getPolicyDetails(uint _policyId) public view returns(address payable,address payable[] memory,uint[] memory,string memory,uint[] memory,uint8,status){
+    function getPolicyDetails(uint _policyId) public view returns(address payable,address payable[] memory,uint[] memory,string memory,uint[] memory,uint8,status,policyState){
         policy memory p = policies[_policyId];
         uint[] memory a = new uint[](7);
         a[0] = _policyId;
@@ -196,7 +196,7 @@ contract genz {
         a[4] = (p.endTime);
         a[5] = (p.coverageAmount);
         a[6] = (p.policySum);
-        return (p.user,p.cover,p.amtCover,p.location,a,p.cropId,p.st);
+        return (p.user,p.cover,p.amtCover,p.location,a,p.cropId,p.st,p.state);
     }
 
     function getPolicyLength() public view returns(uint){

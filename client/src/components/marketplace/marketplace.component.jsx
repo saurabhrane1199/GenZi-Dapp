@@ -17,7 +17,7 @@ const CoverButton = ({coverDetails, handleCover}) => {
     return(
         <OverlayTrigger
     placement="bottom"
-    delay={{ show: 250, hide: 400 }}
+    delay={{ show: 100, hide: 400 }}
     overlay={renderTooltip}
   >
         <button className="coverButton" onClick={() => handleCover(coverDetails[0],coverDetails[5],coverDetails[6])}>
@@ -42,8 +42,9 @@ const TableRow = ({index, policy, handleCover }) =>
     <td>{policy[5]}</td>
     <td>{policy[6]==0 ? "Open" : "Closed"}</td>
     <td style={{textAlign:"center"}}>
-        {/* <CoverButton coverDetails/> */}
-        <button className="coverButton" tooltip="Cover" onClick={() => handleCover(policy[4][0],policy[4][5],policy[4][6])}><CropLogo className="seedicon"/></button></td>
+        <CoverButton coverDetails={policy[4]} handleCover={handleCover}/>
+        {/* <button className="coverButton" tooltip="Cover" onClick={() => handleCover(policy[4][0],policy[4][5],policy[4][6])}><CropLogo className="seedicon"/></button>*/}
+        </td> 
     {/* <td>{policy[11]}</td> */}
 </tr>)
 
@@ -68,6 +69,9 @@ class MarketPlace extends Component {
 
     coverForPolicy = (id, coverageAmt, policySum) => {
         const val = prompt("Enter Amount")
+        if(!val){
+            return
+        }
         const remainingSum = coverageAmt - policySum
         if(val > remainingSum){
             alert(`Please Enter a valid amount(Less than or equal to ${remainingSum} )`)
@@ -77,7 +81,7 @@ class MarketPlace extends Component {
         .send({
             from: this.props.accounts[0],
             value:val
-        }).then(res => console.log(`Success ${res}`))
+        }).then(()=>this.props.navigateToContracts())
         
     }
 

@@ -72,7 +72,7 @@ class PortFolio extends Component {
 
     render() {
         if ( this.state.policies.length===0) {
-            return <div>Loading.....</div>
+            return <div>No Policies Found</div>
         }
         else {
             return (

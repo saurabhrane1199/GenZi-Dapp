@@ -6,12 +6,12 @@ import MarketPlace from '../../components/marketplace/marketplace.component';
 import PropTypes from 'prop-types'
 
 
-const  ConditionalRendering =  ({title}) => {
+const  ConditionalRendering =  ({title, navigateToContracts}) => {
   if(title === 'contracts'){
     return <Portfolio/>
   }
   else{
-    return <MarketPlace/>
+    return <MarketPlace navigateToContracts={navigateToContracts}/>
   }
 }
 
@@ -51,6 +51,10 @@ class InvestorDashboard extends Component{
     this.contracts.genz.methods.getBalanceUser()
             .call()
             .then(res => this.setState({balance:res}))
+  }
+
+  navigateToContracts = () =>{
+    this.setState({key:'contracts'});
   }
 
   render(){
@@ -95,7 +99,7 @@ class InvestorDashboard extends Component{
             </nav>
           </header>
           <div className="content-columns">
-              <ConditionalRendering title={this.state.key}/>
+              <ConditionalRendering navigateToContracts={this.navigateToContracts} title={this.state.key}/>
           </div>
         </main>
       </div>)

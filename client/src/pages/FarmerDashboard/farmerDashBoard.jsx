@@ -7,12 +7,12 @@ import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 
 
-const  ConditionalRendering =  ({title}) => {
+const  ConditionalRendering =  ({title, navigateToContracts}) => {
   if(title === 'contracts'){
     return <MyContracts/>
   }
   else{
-    return <CreatePolicy/>
+    return <CreatePolicy navigateToContracts={navigateToContracts}/>
   }
 }
 
@@ -53,6 +53,10 @@ class FarmerDashboard extends Component{
     this.contracts.genz.methods.getBalanceUser()
             .call()
             .then(res => this.setState({balance:res}))
+  }
+
+  navigateToContracts = () =>{
+    this.setState({key:'contracts'});
   }
 
   render(){
@@ -101,7 +105,7 @@ class FarmerDashboard extends Component{
             </nav>
           </header>
           <div className="content-columns">
-              <ConditionalRendering title={this.state.key}/>
+              <ConditionalRendering title={this.state.key} navigateToContracts={this.navigateToContracts}/>
           </div>
         </main>
       </div>)
