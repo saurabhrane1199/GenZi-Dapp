@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "history": "^5.0.0"
+    "chainlink": "^0.8.2",
+    "history": "^5.0.0",
+    "truffle-hdwallet-provider": "1.0.4",
+    "truffle-hdwallet-provider-privkey": "1.0.3",
+    "web3": "1.0.0-beta.46"
   }
 }
