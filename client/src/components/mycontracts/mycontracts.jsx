@@ -103,7 +103,7 @@ class MyContracts extends Component {
     
     claimPolicy = (id) => {
         console.log(`Id Clicked : ${id}`)
-        this.contracts.genz.methods.claim(id,"2020-11-2","2020-11-3")
+        this.contracts.genz.methods.claim(id,"2020-7-20","2020-7-21")
         .send({from : this.props.accounts[0]})
         .then(res => {
             console.log(`Success ${res}`)
