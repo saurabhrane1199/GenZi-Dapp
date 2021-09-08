@@ -18,3 +18,10 @@ wherein the farmers and the private investors go into a contract.
 The investors pool their investments and provide cover for the
 farmers, thus help the nation become self sufficient and help the
 farmers prosper.
+
+### Website and Demonstration 
+Loved it? Take a look at our video demonstration of the project:- 
+https://youtu.be/sIJIYBwU7l4
+
+Check out our website:-
+https://genz1130.herokuapp.com
