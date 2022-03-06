@@ -25,3 +25,6 @@ https://youtu.be/sIJIYBwU7l4
 
 Check out our website:-
 https://genz1130.herokuapp.com
+
+Documentation:-
+https://devfolio.co/submissions/genz-insurance
