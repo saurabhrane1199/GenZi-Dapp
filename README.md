@@ -28,3 +28,11 @@ https://genz1130.herokuapp.com
 
 Documentation:-
 https://devfolio.co/submissions/genz-insurance
+
+### Images
+
+![Image 1](images/1.webp?raw=true "Image 1")
+![Image 2](images/2.webp?raw=true "Image 2")
+![Image 3](images/3.webp?raw=true "Image 3")
+![Image 4](images/5.webp?raw=true "Image 4")
+![Image 5](images/pic3eopap6v7.webp?raw=true "Image 5")
